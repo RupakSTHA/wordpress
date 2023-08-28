@@ -2,6 +2,8 @@
 /* Paged Refresh Url Pagination Example */ 
 $perPage = 6;
 $currentPage = 1;
+/********If WP_Query is altering the main loop and the "paged" parameter is not set you'll need to add it with get_query_var(). 
+This is so WordPress knows exactly what page it's on. ******/
 $paged = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
 $args = array(
 	'posts_per_page' => $perPage,
