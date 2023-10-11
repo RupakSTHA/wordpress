@@ -4,6 +4,7 @@ Template Name: Test Page
 */
 get_header();
 
+/* Paged Refresh Url Pagination Example */ 
 $perPage = 4;
 $currentPage = 1;
 
@@ -14,8 +15,7 @@ $args = array(
 );
 
 $query = new WP_Query( $args );
-$total_posts = $query->found_posts;//10
-$totalPages = ceil($total_posts / $perPage);
+$total_posts = $query->found_posts;
 ?>
 <div class="error"></div>
 <div class="post-lists">
