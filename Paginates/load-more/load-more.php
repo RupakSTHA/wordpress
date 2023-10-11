@@ -4,7 +4,6 @@ Template Name: Test Page
 */
 get_header();
 
-/* Paged Refresh Url Pagination Example */ 
 $perPage = 4;
 $currentPage = 1;
 
