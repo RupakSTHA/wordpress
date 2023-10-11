@@ -10,7 +10,8 @@ function your_script_funct(){
 }
 
 //action filters for load more ajax
-function load_more_action(){
+function rupak_load_more_action(){
+
 	if ( !wp_verify_nonce( $_REQUEST['load_more_nonce_field'], "load_more_my_action")) {
 		echo json_encode( array("status"=>false, 'data'=>"Cannot be accessed directlt!") ); exit;
 	}
@@ -25,7 +26,10 @@ function load_more_action(){
 	);
 	
 	$query = new WP_Query( $args );
-	$total_posts = $query->post_count;
+
+	//ALWAYS CHECK FROM TOTAL POST AND CURRENT PAGED*PER PAGE. POST COUNT GIVES ISSUE.
+	$total_posts = $query->found_posts;
+	$total_current = $perPage*$currentPage;
 
 	ob_start();
 	while ( $query->have_posts() ) {
@@ -40,11 +44,17 @@ function load_more_action(){
 	ob_end_clean();
 	wp_reset_postdata();
 
-	if( $total_posts < 1 ){ echo json_encode( array("status"=>false, 'data'=>"No posts found.") ); exit; }
+	//ALWAYS CHECK FROM TOTAL POST AND CURRENT PAGED*PER PAGE. POST COUNT GIVES ISSUE.
+	if( $total_posts <= $total_current ){ 
+		//IF NO MORE POSTS SEND LOAD MORE BUTTON FALSE
+		echo json_encode( array("status"=>true, 'data'=>$output_string, "loadButton"=>false) ); 
+		exit; 
+	}
 
-	echo  json_encode( array("status"=>true, 'data'=>$output_string) );
+	//IF MORE POSTS SEND LOAD MORE BUTTON TRUE
+	echo  json_encode( array("status"=>true, 'data'=>$output_string, "loadButton"=>true) );
 	exit;
 	
 }
-add_action("wp_ajax_load_more_action", "load_more_action");
-add_action("wp_ajax_nopriv_load_more_action", "load_more_action");
+add_action("wp_ajax_rupak_load_more_action", "rupak_load_more_action");
+add_action("wp_ajax_nopriv_rupak_load_more_action", "rupak_load_more_action");
