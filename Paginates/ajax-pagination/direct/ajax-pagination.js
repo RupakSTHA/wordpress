@@ -7,7 +7,8 @@ jQuery(document).ready( function($) {
       $( '.portfolio-wrapper' ).html( portfolio );
 
       if(pushTrigger){
-        window.history.pushState({href: link}, '');
+        //first args send link to pop state and third args change the browser url
+        window.history.pushState({href: link}, '', link);
       }
 
     });
@@ -31,7 +32,7 @@ jQuery(document).ready( function($) {
   })
 
   //for default
-  history.replaceState({href: "./"}, 'default')
+  history.replaceState({href: "./"}, 'default', './')
 
 });
 
